@@ -13,6 +13,13 @@ const COLORS = [
   '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6B7280'
 ];
 
+interface TooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    payload: CategoryData;
+  }>;
+}
+
 export function ExpenseChart({ expenses }: ExpenseChartProps) {
   const categoryData: CategoryData[] = React.useMemo(() => {
     const categoryMap = new Map<string, { amount: number; count: number }>();
@@ -32,7 +39,7 @@ export function ExpenseChart({ expenses }: ExpenseChartProps) {
     }));
   }, [expenses]);
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (

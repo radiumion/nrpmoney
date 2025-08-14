@@ -4,7 +4,7 @@ import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
 import { useData } from '../../contexts/DataContext';
 import { formatCurrency } from '../../lib/utils';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Trash2, Search, Download } from 'lucide-react';
 import { EXPENSE_CATEGORIES } from '../../lib/mockData';
 import toast from 'react-hot-toast';
@@ -25,9 +25,9 @@ export function ExpenseList() {
       })
       .sort((a, b) => {
         if (sortOrder === 'desc') {
-          return new Date(b.date).getTime() - new Date(a.date).getTime();
+          return parseISO(b.date).getTime() - parseISO(a.date).getTime();
         } else {
-          return new Date(a.date).getTime() - new Date(b.date).getTime();
+          return parseISO(a.date).getTime() - parseISO(b.date).getTime();
         }
       });
   }, [expenses, searchTerm, selectedCategory, sortOrder]);
@@ -132,7 +132,7 @@ export function ExpenseList() {
             {filteredExpenses.map((expense) => (
               <tr key={expense.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {format(new Date(expense.date), 'MMM dd, yyyy')}
+                  {format(parseISO(expense.date), 'MMM dd, yyyy')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">

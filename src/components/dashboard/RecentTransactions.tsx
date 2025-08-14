@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '../ui/Card';
 import { Expense } from '../../types';
 import { formatCurrency } from '../../lib/utils';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { Receipt } from 'lucide-react';
 
 interface RecentTransactionsProps {
@@ -29,7 +29,7 @@ export function RecentTransactions({ expenses }: RecentTransactionsProps) {
             </div>
             <div className="text-right">
               <p className="font-semibold text-gray-900">{formatCurrency(expense.amount)}</p>
-              <p className="text-sm text-gray-600">{format(new Date(expense.date), 'MMM dd')}</p>
+              <p className="text-sm text-gray-600">{format(parseISO(expense.date), 'MMM dd')}</p>
             </div>
           </div>
         ))}

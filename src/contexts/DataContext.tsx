@@ -4,7 +4,7 @@ import { LocalStorage } from '../lib/storage';
 import { NPSE_STOCKS, generateMockExpenses, generateMockInvestments } from '../lib/mockData';
 import { useAuth } from './AuthContext';
 import { getRandomPriceChange } from '../lib/utils';
-import { startOfMonth, endOfMonth, isWithinInterval } from 'date-fns';
+import { startOfMonth, endOfMonth, isWithinInterval, parseISO } from 'date-fns';
 
 interface DataContextType {
   expenses: Expense[];
@@ -163,7 +163,7 @@ export function DataProvider({ children }: DataProviderProps) {
     const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
     const monthlyExpenses = expenses
       .filter(expense => 
-        isWithinInterval(new Date(expense.date), { start: monthStart, end: monthEnd })
+        isWithinInterval(parseISO(expense.date), { start: monthStart, end: monthEnd })
       )
       .reduce((sum, expense) => sum + expense.amount, 0);
 

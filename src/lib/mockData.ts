@@ -1,6 +1,6 @@
 import { Expense, Stock, Investment } from '../types';
 import { generateId, getRandomPriceChange } from './utils';
-import { subDays, format } from 'date-fns';
+import { subDays, format, parseISO } from 'date-fns';
 
 export const EXPENSE_CATEGORIES = [
   'Food & Dining',
@@ -155,18 +155,19 @@ export const generateMockExpenses = (userId: string): Expense[] => {
   
   for (let i = 0; i < 50; i++) {
     const date = subDays(new Date(), Math.floor(Math.random() * 90));
+    const dateString = format(date, 'yyyy-MM-dd');
     expenses.push({
       id: generateId(),
       userId,
       amount: Math.floor(Math.random() * 5000) + 100,
       category: EXPENSE_CATEGORIES[Math.floor(Math.random() * EXPENSE_CATEGORIES.length)],
       description: getRandomDescription(),
-      date: format(date, 'yyyy-MM-dd'),
+      date: dateString,
       createdAt: date.toISOString()
     });
   }
   
-  return expenses.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return expenses.sort((a, b) => parseISO(b.date).getTime() - parseISO(a.date).getTime());
 };
 
 export const generateMockInvestments = (userId: string): Investment[] => {
@@ -177,6 +178,7 @@ export const generateMockInvestments = (userId: string): Investment[] => {
     const shares = Math.floor(Math.random() * 100) + 10;
     const purchasePrice = stock.currentPrice - (Math.random() * 200 - 100);
     const purchaseDate = subDays(new Date(), Math.floor(Math.random() * 180));
+    const purchaseDateString = format(purchaseDate, 'yyyy-MM-dd');
     
     investments.push({
       id: generateId(),
@@ -185,7 +187,7 @@ export const generateMockInvestments = (userId: string): Investment[] => {
       symbol: stock.symbol,
       shares,
       purchasePrice: Math.max(purchasePrice, 50),
-      purchaseDate: format(purchaseDate, 'yyyy-MM-dd'),
+      purchaseDate: purchaseDateString,
       currentPrice: stock.currentPrice
     });
   });
